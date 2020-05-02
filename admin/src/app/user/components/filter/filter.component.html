@@ -1,0 +1,32 @@
+<form *ngIf="!isShowChips" class="filter-form" fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="15px">
+        
+        <mat-form-field floatLabel='never' class="example-full-width" fxFlex="33%" fxFlexFill>
+          <input matInput [(ngModel)]="query.name" name="name" placeholder="first Name, last Name" value="Sushi">
+        </mat-form-field>
+
+        <mat-form-field floatLabel='never' class="example-full-width" fxFlex="33%" fxFlexFill>
+            <input [(ngModel)]="query.whatsappNumber" name="whatsappNumber" matInput placeholder="Whatsapp Number">
+        </mat-form-field>
+
+        <mat-form-field fxFlex="33%" fxFlexFill floatLabel='never'>
+            <mat-label>Role</mat-label>
+            <mat-select #fontSize  [(value)]="query.role">
+              <mat-option value="{{role.roleName}}" *ngFor="let role of allRoles">{{ role.roleName | roleName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <span class="example-spacer" fxFlex></span>
+          <button [disabled]="!query.role && !query.name && !query.whatsappNumber" class="filter-close" mat-icon-button aria-label="search for items" (click)="onSearch()">
+              <mat-icon>search</mat-icon>
+          </button>
+          <div fxFlex="3%" fxFlexFill class="filter-close">
+              <button  mat-icon-button (click)="onFilterClose()">
+                  <mat-icon aria-hidden="false" aria-label="Example heart icon">close</mat-icon>
+              </button>
+          </div>
+          
+    </form>
+    <div>
+        <app-filter-chip *ngIf="isShowChips" [filterData]="query" (onClear)="onClearChip()"></app-filter-chip>  <!--  filter chip -->
+    </div>
+    

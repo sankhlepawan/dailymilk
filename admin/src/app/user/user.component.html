@@ -1,0 +1,74 @@
+<div class="container">
+
+    <mat-toolbar color="primary">
+        <mat-toolbar-row *ngIf="isShowFilter">
+            <app-user-filter (onClose)="tootleFilter()" (onFilter)="onFilter($event)" [isShowFilter]="isShowFilter"></app-user-filter>
+        </mat-toolbar-row>
+        <mat-toolbar-row *ngIf="!isShowFilter">
+          <span>Users</span>
+          <span class="example-spacer"></span>
+          <a mat-icon-button  routerLink="add-user">
+              <mat-icon aria-hidden="false" aria-label="Example heart icon">add_box</mat-icon>
+          </a>
+          <button mat-icon-button (click)="isShowFilter = !isShowFilter;">
+              <mat-icon aria-hidden="false" aria-label="Example heart icon">filter_list</mat-icon>
+          </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+  
+  <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
+  <table mat-table
+    [dataSource]="data" multiTemplateDataRows
+    class="mat-elevation-z8"
+    matSort matSortActive="mobile" matSortDisableClear matSortDirection="desc">
+   
+    
+<ng-container matColumnDef="{{column}}" *ngFor="let column of getDisplayedColumns();">
+  
+  <ng-container [ngSwitch]="column">
+      <ng-container *ngSwitchCase="'mobile'">
+        <th mat-header-cell  *matHeaderCellDef mat-sort-header> {{column}} </th>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <th mat-header-cell *matHeaderCellDef > {{column}} </th>
+      </ng-container>
+  </ng-container>
+ 
+ <td mat-cell *matCellDef="let element;" [ngSwitch]="column">
+   <div class="o-item-name"  *ngSwitchCase="'name'" matTooltip="{{ element | fullName }}">{{ element | fullName }}</div> 
+   <div class="o-item-name"  *ngSwitchCase="'mobile'" matTooltip="{{ element.mobile }}">{{ element.mobile || 'NA' }}</div>
+   <div class="o-item-name"  *ngSwitchCase="'whatsapp Number'" matTooltip="{{ element.whatsappNumber }}">{{ element.whatsappNumber || 'NA' }}</div>
+   <div class="o-item-name"  *ngSwitchCase="'Language'" matTooltip="{{element.userPreference?.language}}">{{ element.userPreference?.language || 'NA' }}</div>
+   <div class="o-item-name"  *ngSwitchCase="'roles'" >{{ (element?.roles | roleName )  || 'NA' }}</div>
+   <button *ngSwitchCase="'action'" (click)="selectedUser = element;" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+   </button>
+   <div class="o-item-name" *ngSwitchDefault matTooltip="{{element[column]}}">{{ element[column] }}</div>
+  </td>
+</ng-container>
+
+<mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="onUserEdit(selectedUser)">
+      <mat-icon>thumb_up</mat-icon>
+      <span>Edit</span>
+    </button>
+    <button mat-menu-item (click)="onUserDelete(selectedUser)">
+      <mat-icon>delete</mat-icon>
+      <span>Delete</span>
+    </button>
+    <button mat-menu-item (click)="onUserEnable(selectedUser)">
+        <mat-icon>{{ selectedUser && selectedUser.enable ? 'thumb_down' : 'thumb_up' }} </mat-icon>
+        <span>{{ selectedUser && selectedUser.enable ? 'Disabled' : 'Enable' }}</span>
+      </button>
+  </mat-menu>
+  
+<tr mat-header-row *matHeaderRowDef="getDisplayedColumns();"></tr>
+<tr mat-row *matRowDef="let element; columns: getDisplayedColumns();"
+   class="example-element-row"
+   [class.example-expanded-row]="expandedElement === element"
+></tr>
+</table>
+<!-- <app-loader [isLoading]="isLoadingResults" size="1"></app-loader> -->
+<app-no-data [isShow]="!isLoadingResults && data.length == 0"></app-no-data>
+<mat-paginator [length]="resultsLength" [pageSizeOptions]="[5,7,10]"></mat-paginator>
+</div>

@@ -1,0 +1,112 @@
+<div class="container">
+        <mat-toolbar color="primary">
+          <mat-toolbar-row >
+            <a mat-icon-button routerLink="/product">
+                <mat-icon aria-hidden="false" aria-label="Example heart icon">arrow_back</mat-icon>
+            </a>
+            <span>Add Products</span>
+            <span class="example-spacer"></span>
+            <button mat-button routerLink="/product" >Cancel</button>
+            <button mat-button [disabled]="addProductForm.invalid || isLoading" (click)="onProductAdd(addProductForm.value)">Add</button>
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div class="main-div">
+        <app-loader [isLoading]="isLoading" size="1"></app-loader>
+        <form class="example-form" [formGroup]="addProductForm">
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                
+                    
+
+                <mat-form-field  [ngClass]="{'has-error':!name.valid && name.touched }" class="example-full-width" fxFlex="25%" fxFlexFill>
+                    <mat-label>Name</mat-label>
+                    <input formControlName="name" name="name"  matInput placeholder="Ex. Pizza" value="Sushi">
+                    <app-validation-error [fieldVal]="name"></app-validation-error>
+                </mat-form-field>
+                
+
+                <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill [ngClass]="{'has-error':!qwt.valid && qwt.touched }">
+                    <mat-label>Quantity(Liters)</mat-label>
+                    <input  formControlName="qwt" name="qwt" matInput placeholder="Qwt" >
+                    <app-validation-error [message]="'only number allowed.'" [fieldVal]="qwt"></app-validation-error>
+                </mat-form-field>
+
+                <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill [ngClass]="{'has-error':!price.valid && price.touched }">
+                    <mat-label>Price</mat-label>
+                    <input formControlName="price" matInput placeholder="##.##" >
+                    <app-validation-error [message]="'only number allowed.'" [fieldVal]="price"></app-validation-error>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="25%" fxFlexFill [ngClass]="{'has-error':!category.valid && category.touched }">
+                    <mat-label>Category</mat-label>
+                    <mat-select name="category" formControlName="category" [(ngModel)]="selectedCategoryId" (ngModelChange)="onCategoryChange(category.value)">
+                        <mat-option *ngFor="let item of categories" [value]="item.id">
+                        {{item.name}}
+                        </mat-option>
+                    </mat-select>
+                    <app-validation-error [fieldVal]="category"></app-validation-error>
+                </mat-form-field>
+
+            </div>
+            <div fxLayout="row"  fxLayout.xs="column"  fxLayoutAlign="start start" fxLayoutGap="12px">
+                <mat-form-field fxFlex="25%" fxFlexFill [ngClass]="{'has-error':!subCategory.valid && subCategory.touched }">
+                    <mat-label>Sub Category</mat-label>
+                    <mat-select name="subCategory" formControlName="subCategory">
+                        <mat-option *ngFor="let sc of subCategoriesList" [value]="sc.id">
+                        {{sc.name}}
+                        </mat-option>
+                    </mat-select>
+                    <app-validation-error [fieldVal]="subCategory"></app-validation-error>
+                    <!-- <mat-error *ngIf="subCategory.invalid && subCategory.touched" appValidationError [fieldVal]="subCategory"></mat-error> -->
+                </mat-form-field>
+
+                <div fxFlex="25%" fxFlexFill [style.line-height]="4" [ngClass]="{'has-error':!available.valid && available.touched }" >
+                    <mat-slide-toggle name="available" formControlName="available">Avilable</mat-slide-toggle>
+                </div> 
+            </div>
+            <button mat-icon-button (click)="addMoreItemDetails(t.controls)" *ngIf="subCategory.valid && (itemDetailsType.length !== t.controls.length)">Add details</button>
+            <div *ngFor="let detail of t.controls; let i = index">
+                <div fxLayout="row" [formGroup]="detail" fxLayout.xs="column"  fxLayoutAlign="start start" fxLayoutGap="12px">
+                    
+                    <!-- <mat-form-field  class="example-full-width" fxFlex="45%" fxFlexFill>
+                        <mat-label>Name</mat-label>
+                        <input formControlName="name" name="name"  matInput placeholder="Ex. Pizza" value="Sushi">
+                        <mat-error *ngIf="detail.controls.name.errors">
+                            <div *ngIf="detail.controls.name.errors.required">Name is required</div>
+                        </mat-error>
+                    </mat-form-field> -->
+                    <mat-form-field fxFlex="25%" fxFlexFill [ngClass]="{'has-error':!subCategory.valid && subCategory.touched }">
+                        <mat-label>Name</mat-label>
+                        <mat-select name="name" formControlName="name" (selectionChange)="onItemDetailsChange($event,t.controls)">
+                            <mat-option *ngFor="let sc of itemDetailsType[i]" [value]="sc">
+                                {{sc}}
+                            </mat-option>
+                        </mat-select>
+                        <mat-error *ngIf="detail.controls.name.errors">
+                            <div *ngIf="detail.controls.name.errors.required">Name is required</div>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="example-full-width" fxFlex="45%" fxFlexFill >
+                        <mat-label>Value</mat-label>
+                        <input  formControlName="value" name="value" matInput placeholder="value" >
+                        <mat-error *ngIf="detail.controls.value.errors">
+                            <div *ngIf="detail.controls.value.errors.required">Name is required</div>
+                        </mat-error>
+                    </mat-form-field>
+
+                    <div fxFlex="10%">
+                        <button style="line-height: 6;" mat-icon-button   (click)="removeItemDetils(i, t.controls[i])">
+                            <mat-icon aria-hidden="false" aria-label="Remove">delete</mat-icon>
+                        </button>
+                        <button color="primary" *ngIf="(t.controls.length === (i + 1))" style="line-height: 6;" mat-icon-button  fxFlex (click)="addMoreDetails(i, t.controls)">
+                            <mat-icon aria-hidden="false" aria-label="add">add_box</mat-icon>
+                        </button>
+                    </div>
+                </div>
+               
+            </div>
+
+            
+        </form>
+      </div>
+</div>

@@ -1,0 +1,12 @@
+<mat-error class="error-comp" *ngIf="fieldVal.invalid && fieldVal.touched">
+    
+    <font>{{ 
+        fieldVal.hasError('required') ? ( 'this Field is Required.' || message ) : 
+        fieldVal.hasError('email') ? ('Not a valid email.' || message ) :
+        fieldVal.hasError('minlength') ? ( 'Minimum lenght required.' || message) :
+        fieldVal.hasError('maxlength') ? ('Char can not be more than max lenght.' || message) :
+        fieldVal.hasError('passwordMismatch') ? ( 'Password didt not match' || message) : 
+        fieldVal.hasError('pattern') ? message : 'invalid pattern.'
+    }}
+</font>
+</mat-error>

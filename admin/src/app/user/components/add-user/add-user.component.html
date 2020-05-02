@@ -1,0 +1,154 @@
+<div class="container">
+        <mat-toolbar color="primary">
+          <mat-toolbar-row >
+            <a mat-icon-button routerLink="/user">
+                <mat-icon aria-hidden="false" aria-label="Example heart icon">arrow_back</mat-icon>
+            </a>
+            <span>{{title}} User</span>
+            <span class="example-spacer"></span>
+            
+        </mat-toolbar-row>
+      </mat-toolbar>
+      <div class="main-div">
+        <app-loader style="position: absolute;top: 50%;" [isLoading]="isLoading" size="1.5"></app-loader>
+            <mat-vertical-stepper [linear]="true" #stepper>
+                        <mat-step [stepControl]="addUserForm">
+                          <form [formGroup]="addUserForm">
+                            <ng-template matStepLabel>Personal Info</ng-template>
+                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                
+                                    <mat-form-field  [ngClass]="{'has-error':!firstName.valid && firstName.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                        <mat-label>first Name</mat-label>
+                                        <input formControlName="firstName" name="firstName"  matInput placeholder="First Name">
+                                        <app-validation-error [fieldVal]="firstName"></app-validation-error>
+                                    </mat-form-field>
+                                    
+                    
+                                    <mat-form-field  [ngClass]="{'has-error':!lastName.valid && lastName.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                        <mat-label>last Name</mat-label>
+                                        <input formControlName="lastName" name="lastName"  matInput placeholder="Last Name">
+                                        <app-validation-error [fieldVal]="lastName"></app-validation-error>
+                                    </mat-form-field>
+
+                                </div>
+                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                    
+                                    <mat-form-field  [ngClass]="{'has-error':!whatsappNumber.valid && whatsappNumber.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                        <mat-label>whatsapp Number</mat-label>
+                                        <input formControlName="whatsappNumber" name="whatsappNumber"  matInput placeholder="Whatsapp Number">
+                                        <app-validation-error [fieldVal]="whatsappNumber"></app-validation-error>
+                                    </mat-form-field>
+                    
+                                    <mat-form-field  [ngClass]="{'has-error':!mobile.valid && mobile.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                        <mat-label>Mobile</mat-label>
+                                        <input formControlName="mobile" name="mobile"  matInput placeholder="Mobile">
+                                        <app-validation-error [fieldVal]="mobile"></app-validation-error>
+                                    </mat-form-field>
+                                </div>
+                            <div>
+                              <button mat-button matStepperNext>Next</button>
+                            </div>
+                          </form>
+                        </mat-step>
+
+                        <mat-step [stepControl]="addressForm">
+                                <form [formGroup]="addressForm">
+                                        <ng-template matStepLabel>Address Info</ng-template>
+                                        
+                                        <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                            
+                                                <mat-form-field  [ngClass]="{'has-error':!location.valid && location.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>Location</mat-label>
+                                                    <input formControlName="location" name="location"  matInput placeholder="lat,lng">
+                                                    <app-validation-error [fieldVal]="location"></app-validation-error>
+                                                </mat-form-field>
+                                                
+                                
+                                                <mat-form-field  [ngClass]="{'has-error':!pincode.valid && pincode.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>Pincode</mat-label>
+                                                    <input formControlName="pincode" name="pincode"  matInput placeholder="Pin code">
+                                                    <app-validation-error [fieldVal]="pincode"></app-validation-error>
+                                                </mat-form-field>
+            
+                                            </div>
+                                            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                                
+                                                <mat-form-field  [ngClass]="{'has-error':!country.valid && country.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>Country</mat-label>
+                                                    <input formControlName="country" name="country"  matInput placeholder="Country">
+                                                    <app-validation-error [fieldVal]="country"></app-validation-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field  [ngClass]="{'has-error':!state.valid && state.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>State</mat-label>
+                                                    <input formControlName="state" name="state"  matInput placeholder="State">
+                                                    <app-validation-error [fieldVal]="state"></app-validation-error>
+                                                </mat-form-field>
+
+                                             </div>
+                                                <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+                                
+                                                <mat-form-field  [ngClass]="{'has-error':!city.valid && city.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>City</mat-label>
+                                                    <input formControlName="city" name="city"  matInput placeholder="City">
+                                                    <app-validation-error [fieldVal]="city"></app-validation-error>
+                                                </mat-form-field>
+
+                                                <mat-form-field  [ngClass]="{'has-error': !fullAddress.valid && fullAddress.touched }" class="example-full-width" fxFlex="50%" fxFlexFill>
+                                                    <mat-label>full Address</mat-label>
+                                                    <textarea  formControlName="fullAddress" name="fullAddress"  matInput placeholder="full Address"></textarea>
+                                                    <app-validation-error [fieldVal]="fullAddress"></app-validation-error>
+                                                </mat-form-field>
+
+                                            </div> 
+                                        <div>
+                                          <button mat-button matStepperNext>Next</button>
+                                          <button mat-button matStepperPrevious>Back</button>
+                                        </div>
+                                      </form>
+                        </mat-step>
+
+                        <mat-step [stepControl]="otherDetailsForm">
+                          <form [formGroup]="otherDetailsForm">
+                            <ng-template matStepLabel>Roles and Language</ng-template>
+                            <div fxLayout="row"  fxLayout.xs="column"  fxLayoutAlign="start start" fxLayoutGap="12px">
+                                
+                                <mat-form-field fxFlex="50%" fxFlexFill [ngClass]="{'has-error':!roleids.valid && roleids.touched }">
+                                    <mat-label>Roles</mat-label>
+                                    <mat-select name="roleids" formControlName="roleids" multiple>
+                                        <mat-select-trigger>
+                                            {{roleids.value ? roleids.value : ''}}
+                                            <span *ngIf="roleids.value?.length > 2" class="example-additional-selection">
+                                                (+{{roleids.value.length - 2}} {{roleids.value?.length === 2 ? 'other' : 'others'}})
+                                            </span>
+                                        </mat-select-trigger>
+                                        <mat-option>--Plese Select--</mat-option>
+                                        <mat-option *ngFor="let role of allRoles" [value]="role.roleName | roleName">
+                                        {{role.roleName | roleName}}
+                                        </mat-option>
+                                    </mat-select>
+                                    <app-validation-error [fieldVal]="roleids"></app-validation-error>
+                                </mat-form-field>
+
+                                <mat-form-field fxFlex="50%" fxFlexFill [ngClass]="{'has-error':!language.valid && language.touched }">
+                                        <mat-label>Language</mat-label>
+                                        <mat-select name="language" formControlName="language">
+                                            <mat-option>--Plese Select--</mat-option>
+                                            <mat-option *ngFor="let lang of languages" [value]="lang.value">
+                                            {{lang.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                        <app-validation-error [fieldVal]="language"></app-validation-error>
+                                    </mat-form-field>
+                            </div>
+                            <div>
+                                <button mat-button routerLink="/user" >Cancel</button>
+                                <button mat-button [disabled]="(addUserForm.invalid && addressForm.invalid && otherDetailsForm.invalid) || isLoading" (click)="onUserAdd(addUserForm.value,otherDetailsForm.value,addressForm.value, stepper);">Add</button>
+                                <!-- <button mat-button matStepperPrevious>Back</button> -->
+                                <!-- <button mat-button (click)="stepper.reset()">Reset</button> -->
+                            </div>
+                        </form>
+                        </mat-step>
+                      </mat-vertical-stepper>
+        </div>
+</div>
