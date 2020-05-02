@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProductModel, AllProductApi } from './product.types';
 import { Logger } from '@core/logger.service';
+import { defaultPagination } from '@shared/constants';
 
 const log = new Logger('ProductService');
 
@@ -32,5 +33,11 @@ export class ProductService {
     log.info('fetching category data...');
     const url = '/v1/common/findAllCategory';
     return this._httpClient.get<AllProductApi>(url);
+  }
+
+  getproductByName(name: string) {
+    let nameVal = encodeURI(name);
+    const body = { ...defaultPagination, limit: 100, query: `name==*${nameVal}*` };
+    return this._httpClient.post<AllProductApi>('/v1/product/search', body);
   }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { ProductModel, ItemDetailTypeByCategory } from '../../product.types';
 import { ProductService } from '../../product.service';
-import { numberPattern } from '@shared/patterns.constants';
+import { numberPattern } from '@shared/constants';
 
 @Component({
   selector: 'app-add-product',

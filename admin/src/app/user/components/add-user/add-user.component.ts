@@ -3,7 +3,6 @@ import { UserService } from './../../user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserModel, RoleApi, RoleType, dbRoleTypes, UIRoleTypes } from '../../user.types';
-import { numberPattern } from '@shared/patterns.constants';
 
 @Component({
   selector: 'app-user',
