@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { extract } from '@app/i18n';
 import { ProductComponent } from './product.component';
-import { AddProductComponent } from './components'
+import { AddProductComponent } from './components';
 
 const routes: Routes = [
   { path: '', component: ProductComponent, data: { title: extract('Product') } },

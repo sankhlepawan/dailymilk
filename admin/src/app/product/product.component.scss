@@ -32,8 +32,6 @@ tr.example-element-row:not(.example-expanded-row):active {
   max-width: 124px;
 }
 
-
-
 .example-element-row td {
   border-bottom-width: 0;
 }
@@ -60,17 +58,16 @@ tr.example-element-row:not(.example-expanded-row):active {
   flex: 1 1 auto;
 }
 
-
 td.mat-column-star {
   width: 20px;
   padding-right: 8px;
 }
 
-.o-mobile-d{
-text-align: start;
+.o-mobile-d {
+  text-align: start;
 }
 
-.o-item-name{
+.o-item-name {
   width: 9rem;
   white-space: nowrap;
   overflow: hidden;

@@ -1,78 +1,137 @@
 <div class="container">
-    <mat-toolbar color="primary">
-        <mat-toolbar-row >
-          <span>Orders</span>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <span>Orders</span>
 
-          <span class="example-spacer"></span>
-          <button mat-icon-button>
-              <mat-icon aria-hidden="false" aria-label="Example heart icon">filter_list</mat-icon>
-          </button>
-        </mat-toolbar-row>
-    </mat-toolbar>
+      <span class="example-spacer"></span>
+      <button mat-icon-button>
+        <mat-icon aria-hidden="false" aria-label="Example heart icon">filter_list</mat-icon>
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
   <mat-progress-bar *ngIf="isLoadingResults" mode="indeterminate"></mat-progress-bar>
-  <table mat-table
-    [dataSource]="data" multiTemplateDataRows
+  <table
+    mat-table
+    [dataSource]="data"
+    multiTemplateDataRows
     class="mat-elevation-z8"
-    matSort matSortActive="created_at" matSortDisableClear matSortDirection="desc">
-   
-<ng-container matColumnDef="{{column}}" *ngFor="let column of getDisplayedColumns();">
- <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
- <td mat-cell *matCellDef="let element;" [ngSwitch]="column">
-   <div class="o-item-name" (click)="expandedElement = expandedElement === element ? null : element" *ngSwitchCase="'orderDate'" matTooltip="{{element[column]}}">{{ element[column] | date }}</div> 
-   <div class="o-item-name" (click)="expandedElement = expandedElement === element ? null : element" *ngSwitchCase="'totalPrice'" matTooltip="{{element[column]}}">{{ element[column] | currency:"INR":true }}</div>
-   <div class="o-item-name" [style.color]="element[column] == 'CONFIRMED' ? 'green' : element[column] == 'PLACED' ? 'blue' : element[column] == 'CANCELLED' ? 'red': ''" (click)="expandedElement = expandedElement === element ? null : element" *ngSwitchCase="'status'" matTooltip="{{element[column]}}">{{ element[column] | titlecase }}</div>
-   <button *ngSwitchCase="'action'" (click)="selectedOrder = element;" mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
-      <mat-icon>more_vert</mat-icon>
-   </button>
-  <div class="o-item-name" (click)="expandedElement = expandedElement === element ? null : element" *ngSwitchDefault matTooltip="{{element[column]}}">{{ element[column] }}</div>
-  </td>
-</ng-container>
+    matSort
+    matSortActive="created_at"
+    matSortDisableClear
+    matSortDirection="desc"
+  >
+    <ng-container matColumnDef="{{ column }}" *ngFor="let column of getDisplayedColumns()">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ column }}</th>
+      <td mat-cell *matCellDef="let element" [ngSwitch]="column">
+        <div
+          class="o-item-name"
+          (click)="expandedElement = expandedElement === element ? null : element"
+          *ngSwitchCase="'orderDate'"
+          matTooltip="{{ element[column] }}"
+        >
+          {{ element[column] | date }}
+        </div>
+        <div
+          class="o-item-name"
+          (click)="expandedElement = expandedElement === element ? null : element"
+          *ngSwitchCase="'totalPrice'"
+          matTooltip="{{ element[column] }}"
+        >
+          {{ element[column] | currency: 'INR':true }}
+        </div>
+        <div
+          class="o-item-name"
+          [style.color]="
+            element[column] == 'CONFIRMED'
+              ? 'green'
+              : element[column] == 'PLACED'
+              ? 'blue'
+              : element[column] == 'CANCELLED'
+              ? 'red'
+              : ''
+          "
+          (click)="expandedElement = expandedElement === element ? null : element"
+          *ngSwitchCase="'status'"
+          matTooltip="{{ element[column] }}"
+        >
+          {{ element[column] | titlecase }}
+        </div>
+        <button
+          *ngSwitchCase="'action'"
+          (click)="selectedOrder = element"
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          aria-label="Example icon-button with a menu"
+        >
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <div
+          class="o-item-name"
+          (click)="expandedElement = expandedElement === element ? null : element"
+          *ngSwitchDefault
+          matTooltip="{{ element[column] }}"
+        >
+          {{ element[column] }}
+        </div>
+      </td>
+    </ng-container>
 
-<mat-menu #menu="matMenu">
-    <button mat-menu-item *ngIf="selectedOrder && selectedOrder.status !== 'CONFIRMED'" (click)="onOrderStatusChanged('CONFIRMED')">
-      <mat-icon>thumb_up</mat-icon>
-      <span>Confirm</span>
-    </button>
-    <button mat-menu-item *ngIf="selectedOrder && selectedOrder.status !== 'CANCELLED'" (click)="onOrderStatusChanged('CANCELLED')">
-      <mat-icon>thumb_down</mat-icon>
-      <span>Cancle</span>
-    </button>
-    <button mat-menu-item disabled *ngIf="selectedOrder && selectedOrder.status !== 'DELETED'" (click)="onOrderStatusChanged('DELETED')">
+    <mat-menu #menu="matMenu">
+      <button
+        mat-menu-item
+        *ngIf="selectedOrder && selectedOrder.status !== 'CONFIRMED'"
+        (click)="onOrderStatusChanged('CONFIRMED')"
+      >
+        <mat-icon>thumb_up</mat-icon>
+        <span>Confirm</span>
+      </button>
+      <button
+        mat-menu-item
+        *ngIf="selectedOrder && selectedOrder.status !== 'CANCELLED'"
+        (click)="onOrderStatusChanged('CANCELLED')"
+      >
+        <mat-icon>thumb_down</mat-icon>
+        <span>Cancle</span>
+      </button>
+      <button
+        mat-menu-item
+        disabled
+        *ngIf="selectedOrder && selectedOrder.status !== 'DELETED'"
+        (click)="onOrderStatusChanged('DELETED')"
+      >
         <mat-icon>delete</mat-icon>
         <span>Delete</span>
       </button>
-  </mat-menu>
-  
+    </mat-menu>
 
-<!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-<ng-container matColumnDef="expandedDetail">
- <td mat-cell *matCellDef="let element" [attr.colspan]="getDisplayedColumns().length">
-   <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-     <div class="example-element-diagram" *ngFor="let item of element.items">
-        <div class="example-element-symbol"> {{item.name}} </div>
-        <div class="example-element-weight">  {{item.quantity}} {{item.itemUnit}} </div>
-     </div>
-     <div class="o-mobile-description" *ngIf="isMobile">
-        <div class="o-mobile-d"><strong>orderId:</strong> {{ element.orderId }} </div>
-        <div class="o-mobile-d"><strong>Number:</strong> {{ element.orderNumber }} </div>
-        <div class="o-mobile-d"><strong>Date:</strong> {{ element.orderDate| date }} </div>
-        <div class="o-mobile-d"><strong>Total:</strong> {{ element.totalPrice | currency:"INR":true }}</div>
-    </div>
-   </div>
- </td>
-</ng-container>
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let element" [attr.colspan]="getDisplayedColumns().length">
+        <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+          <div class="example-element-diagram" *ngFor="let item of element.items">
+            <div class="example-element-symbol">{{ item.name }}</div>
+            <div class="example-element-weight">{{ item.quantity }} {{ item.itemUnit }}</div>
+          </div>
+          <div class="o-mobile-description" *ngIf="isMobile">
+            <div class="o-mobile-d"><strong>orderId:</strong> {{ element.orderId }}</div>
+            <div class="o-mobile-d"><strong>Number:</strong> {{ element.orderNumber }}</div>
+            <div class="o-mobile-d"><strong>Date:</strong> {{ element.orderDate | date }}</div>
+            <div class="o-mobile-d"><strong>Total:</strong> {{ element.totalPrice | currency: 'INR':true }}</div>
+          </div>
+        </div>
+      </td>
+    </ng-container>
 
-
-
-<tr mat-header-row *matHeaderRowDef="getDisplayedColumns();"></tr>
-<tr mat-row *matRowDef="let element; columns: getDisplayedColumns();"
-   class="example-element-row"
-   [class.example-expanded-row]="expandedElement === element"
->
-</tr>
-<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
-</table>
-<!-- <app-loader [isLoading]="isLoadingResults" size="1"></app-loader> -->
-<app-no-data [isShow]="!isLoadingResults && data.length == 0"></app-no-data>
-<mat-paginator [length]="resultsLength"  [pageSizeOptions]="[5,7,10]"></mat-paginator>
+    <tr mat-header-row *matHeaderRowDef="getDisplayedColumns()"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: getDisplayedColumns()"
+      class="example-element-row"
+      [class.example-expanded-row]="expandedElement === element"
+    ></tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+  </table>
+  <!-- <app-loader [isLoading]="isLoadingResults" size="1"></app-loader> -->
+  <app-no-data [isShow]="!isLoadingResults && data.length == 0"></app-no-data>
+  <mat-paginator [length]="resultsLength" [pageSizeOptions]="[5, 7, 10]"></mat-paginator>
 </div>

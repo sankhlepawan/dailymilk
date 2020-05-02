@@ -1,26 +1,24 @@
-
 export interface PeriodicElement {
-    name: string;
-    position: number;
-    weight: number;
-    symbol: string;
-    description: string;
-  }
-  
+  name: string;
+  position: number;
+  weight: number;
+  symbol: string;
+  description: string;
+}
+
 export enum orderType {
-    PLACED="PLACED",
-    CONFIRMED="CONFIRMED",
-    DELETED="DELETED",
-    CANCELLED="CANCELLED"
+  PLACED = 'PLACED',
+  CONFIRMED = 'CONFIRMED',
+  DELETED = 'DELETED',
+  CANCELLED = 'CANCELLED',
 }
 
 export interface OrderApi {
-    items: any[];
-    total_count: number;
+  items: any[];
+  total_count: number;
 }
 
 export interface OrderModel {
-    orderID: number;
-    status: orderType;
+  orderID: number;
+  status: orderType;
 }
-  

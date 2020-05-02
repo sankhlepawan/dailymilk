@@ -9,7 +9,7 @@ import { OrderComponent } from './order.component';
 import { SharedModule } from '@shared';
 
 @NgModule({
-  imports: [CommonModule, TranslateModule, FlexLayoutModule, MaterialModule, OrderRoutingModule, SharedModule ],
+  imports: [CommonModule, TranslateModule, FlexLayoutModule, MaterialModule, OrderRoutingModule, SharedModule],
   declarations: [OrderComponent],
 })
 export class OrderModule {}

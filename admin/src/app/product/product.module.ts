@@ -5,7 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { Angulartics2Module } from 'angulartics2';
 import { SharedModule } from '@shared';
 import { MaterialModule } from '@app/material.module';
-import { ProductRoutingModule  } from './product-routing.module';
+import { ProductRoutingModule } from './product-routing.module';
 import { ProductComponent } from './product.component';
 import { AddProductComponent } from './components';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -19,8 +19,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     MaterialModule,
     Angulartics2Module,
     ProductRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  declarations: [ ProductComponent, AddProductComponent ],
+  declarations: [ProductComponent, AddProductComponent],
 })
 export class ProductModule {}

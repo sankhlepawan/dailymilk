@@ -29,14 +29,17 @@
       <nav>
         <mat-list>
           <mat-divider></mat-divider>
-          <ng-container *ngFor="let menu of menus; let index=index;">
-            <a mat-list-item routerLink="{{menu.path}}" routerLinkActive="active" (click)="isMobile && sidenav.close()" >
-              <span translate>{{menu.name}}</span>
+          <ng-container *ngFor="let menu of menus; let index = index">
+            <a
+              mat-list-item
+              routerLink="{{ menu.path }}"
+              routerLinkActive="active"
+              (click)="isMobile && sidenav.close()"
+            >
+              <span translate>{{ menu.name }}</span>
             </a>
             <mat-divider *ngIf="index !== menus.length"></mat-divider>
           </ng-container>
-          
-         
         </mat-list>
       </nav>
     </mat-sidenav>

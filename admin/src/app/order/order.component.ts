@@ -1,16 +1,13 @@
 import { environment } from '@env/environment';
-import {animate, state, style, transition, trigger} from '@angular/animations';
-import {Component, ViewChild, AfterViewInit} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-import {MatSort} from '@angular/material/sort';
-import {merge, Observable, of as observableOf} from 'rxjs';
-import {catchError, map, startWith, switchMap} from 'rxjs/operators';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { merge, Observable, of as observableOf } from 'rxjs';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MediaObserver } from '@angular/flex-layout';
 import { OrderService } from './order.service';
-import { PeriodicElement, orderType, OrderModel} from './order.types';
-
-
-
+import { PeriodicElement, orderType, OrderModel } from './order.types';
 
 @Component({
   selector: 'app-order',
@@ -18,14 +15,13 @@ import { PeriodicElement, orderType, OrderModel} from './order.types';
   styleUrls: ['./order.component.scss'],
   animations: [
     trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0'})),
-      state('expanded', style({height: '*'})),
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
       transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
     ]),
   ],
 })
-export class OrderComponent implements AfterViewInit  {
-  
+export class OrderComponent implements AfterViewInit {
   columnsToDisplay: any[] = [
     { def: 'orderID', showMobile: false },
     { def: 'orderNumber', showMobile: false },
@@ -33,15 +29,15 @@ export class OrderComponent implements AfterViewInit  {
     { def: 'shippingAddress', showMobile: false },
     { def: 'status', showMobile: true },
     { def: 'totalPrice', showMobile: false },
-    { def: 'action', showMobile: true }]
+    { def: 'action', showMobile: true },
+  ];
 
-  
   data: OrderModel[] = [];
   resultsLength = 0;
   isLoadingResults = true;
   isRateLimitReached = false;
   expandedElement: PeriodicElement | null;
-  selectedOrder:any;
+  selectedOrder: any;
   isLoading = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -53,7 +49,7 @@ export class OrderComponent implements AfterViewInit  {
     // this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
 
     // If the user changes the sort order, reset back to the first page.
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
@@ -61,9 +57,13 @@ export class OrderComponent implements AfterViewInit  {
         switchMap(() => {
           this.isLoadingResults = true;
           return this._orderService!.getOrders(
-            this.sort.active, this.sort.direction, this.paginator.pageIndex,this.paginator.pageSize);
+            this.sort.active,
+            this.sort.direction,
+            this.paginator.pageIndex,
+            this.paginator.pageSize
+          );
         }),
-        map(data => {
+        map((data) => {
           // Flip flag to show that loading has finished.
           this.isLoadingResults = false;
           this.isRateLimitReached = false;
@@ -77,9 +77,9 @@ export class OrderComponent implements AfterViewInit  {
           this.isRateLimitReached = true;
           return observableOf([]);
         })
-      ).subscribe(data => this.data = data);
+      )
+      .subscribe((data) => (this.data = data));
   }
-
 
   get isMobile(): boolean {
     return this.media.isActive('xs') || this.media.isActive('sm');
@@ -87,23 +87,16 @@ export class OrderComponent implements AfterViewInit  {
 
   getDisplayedColumns(): string[] {
     const isMobile = this.media.isActive('xs') || this.media.isActive('sm');
-    const columns:string[] = this.columnsToDisplay
-      .filter(cd => !isMobile || cd.showMobile)
-      .map(cd => cd.def);
-      return (columns);
+    const columns: string[] = this.columnsToDisplay.filter((cd) => !isMobile || cd.showMobile).map((cd) => cd.def);
+    return columns;
   }
 
   onOrderStatusChanged(status: string) {
     const { orderID } = this.selectedOrder;
     this.isLoading = true;
-    this._orderService.updateOrderStatus({ status: orderType[status] , orderID})
-    .subscribe((res : OrderModel) => {
+    this._orderService.updateOrderStatus({ status: orderType[status], orderID }).subscribe((res: OrderModel) => {
       this.isLoading = false;
-      this.data = this.data.map((item: any) => item.orderID == this.selectedOrder.orderID ?  { ...res } : item);
+      this.data = this.data.map((item: any) => (item.orderID == this.selectedOrder.orderID ? { ...res } : item));
     });
-
   }
-
 }
-
-

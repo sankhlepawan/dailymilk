@@ -6,8 +6,8 @@ import { MENU } from './menu';
 import { AuthenticationService, CredentialsService } from '@app/auth';
 
 export interface MenuModel {
-  name: string,
-  path: string
+  name: string;
+  path: string;
 }
 
 @Component({
@@ -16,7 +16,6 @@ export interface MenuModel {
   styleUrls: ['./shell.component.scss'],
 })
 export class ShellComponent implements OnInit {
-
   constructor(
     private router: Router,
     private titleService: Title,
@@ -25,7 +24,7 @@ export class ShellComponent implements OnInit {
     private media: MediaObserver
   ) {}
 
-  menus:MenuModel[] = MENU;
+  menus: MenuModel[] = MENU;
   ngOnInit() {}
 
   logout() {
