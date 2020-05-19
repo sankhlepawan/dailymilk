@@ -1,0 +1,111 @@
+<div class="container">
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <a mat-icon-button routerLink="/collection">
+        <mat-icon aria-hidden="false" aria-label="Example heart icon">arrow_back</mat-icon>
+      </a>
+      <span>Create Collection</span>
+      <span class="example-spacer"></span>
+      <button mat-button routerLink="/collection">Cancel</button>
+      <button
+        mat-button
+        [disabled]="addCollectionForm.invalid || isLoading"
+        (click)="onCollectionAdd(addCollectionForm.value)"
+      >
+        Add
+      </button>
+    </mat-toolbar-row>
+  </mat-toolbar>
+  <div class="main-div">
+    <app-loader [isLoading]="isLoading" size="1"></app-loader>
+    <form class="example-form" [formGroup]="addCollectionForm">
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+        <mat-form-field fxFlex="25%" fxFlexFill>
+          <mat-label>Type</mat-label>
+          <mat-select name="type" formControlName="type">
+            <mat-option *ngFor="let type of animalTypes" [value]="type">
+              {{ type }}
+            </mat-option>
+          </mat-select>
+          <app-validation-error [fieldVal]="type"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label> Test Mode </mat-label>
+          <input formControlName="testMode" name="testMode" matInput placeholder="Test Mode" />
+          <app-validation-error [message]="'only number allowed.'" [fieldVal]="testMode"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>FAT</mat-label>
+          <input formControlName="fat" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="fat"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>SNF</mat-label>
+          <input formControlName="snf" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="snf"></app-validation-error>
+        </mat-form-field>
+      </div>
+
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>QWT</mat-label>
+          <input formControlName="qwt" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="qwt"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Rate</mat-label>
+          <input formControlName="rate" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="rate"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Amount</mat-label>
+          <input formControlName="amount" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="amount"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Density</mat-label>
+          <input formControlName="density" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="density"></app-validation-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Lactose</mat-label>
+          <input formControlName="lactose" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="lactose"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Salts</mat-label>
+          <input formControlName="salts" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="salts"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Protein</mat-label>
+          <input formControlName="protein" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="protein"></app-validation-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Temp</mat-label>
+          <input formControlName="temp" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="temp"></app-validation-error>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+        <mat-form-field class="example-full-width" fxFlex="25%" fxFlexFill>
+          <mat-label>Water</mat-label>
+          <input formControlName="water" matInput placeholder="##.##" />
+          <app-validation-error [fieldVal]="water"></app-validation-error>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+</div>

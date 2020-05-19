@@ -1,8 +1,10 @@
+import { UserModel } from './../../../user/user.types';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { OrderModel } from '../../order.types';
 import { OrderService } from '../../order.service';
 import { ProductService } from '../../../product/product.service';
+import { UserService } from '../../../user/user.service';
 import { numberPattern } from '@shared/constants';
 
 @Component({
@@ -11,7 +13,12 @@ import { numberPattern } from '@shared/constants';
   styleUrls: ['./create-order.component.scss'],
 })
 export class CreateOrderComponent implements OnInit {
-  constructor(private fb: FormBuilder, private _service: OrderService, private _productService: ProductService) {
+  constructor(
+    private fb: FormBuilder,
+    private _service: OrderService,
+    private _productService: ProductService,
+    private _userService: UserService
+  ) {
     this._createForm();
     this.options = [];
     this.options[0] = [];
@@ -28,6 +35,9 @@ export class CreateOrderComponent implements OnInit {
   selectedCategory: any;
   options: any[];
   grandTotal: number = 0;
+  orderForm: FormGroup;
+  isUserSearching: boolean = false;
+  mobileUsers: UserModel[];
 
   _createForm() {
     this.addProductForm = this.fb.group({
@@ -39,6 +49,35 @@ export class CreateOrderComponent implements OnInit {
       //   available: [false, { validators: [] }],
       details: new FormArray([]),
     });
+
+    this.orderForm = this.fb.group({
+      mobile: ['', { validators: [Validators.required] }],
+      whatsappNumber: [false, { validators: [] }],
+      firstName: ['', { validators: [Validators.required] }],
+      lastName: ['', { validators: [Validators.required] }],
+      paid: [true, { validators: [Validators.required] }],
+      shippingAddress: ['', { validators: [Validators.required] }],
+    });
+  }
+
+  get shippingAddress() {
+    return this.orderForm.get('shippingAddress');
+  }
+
+  get mobile() {
+    return this.orderForm.get('mobile');
+  }
+
+  get whatsappNumber() {
+    return this.orderForm.get('whatsappNumber');
+  }
+
+  get firstName() {
+    return this.orderForm.get('firstName');
+  }
+
+  get lastName() {
+    return this.orderForm.get('lastName');
   }
 
   get name() {
@@ -153,5 +192,27 @@ export class CreateOrderComponent implements OnInit {
       });
     }
     this.grandTotal = total;
+  }
+
+  onMobileChange(number: string) {
+    if (number && number.length > 4) {
+      console.log(number);
+      this.isUserSearching = true;
+      this._userService.findByMobile(number).subscribe((res: any) => {
+        this.mobileUsers = res.items;
+        this.isUserSearching = false;
+      });
+    }
+  }
+
+  displayUserNumberFn(user: any) {
+    return user.mobile;
+  }
+
+  onUserMobileSelect(user: any) {
+    console.log('user selected =>', user);
+    this.orderForm.controls.firstName.setValue(user.firstName);
+    this.orderForm.controls.lastName.setValue(user.lastName);
+    this.orderForm.controls.whatsappNumber.setValue(user.whatsappNumber);
   }
 }

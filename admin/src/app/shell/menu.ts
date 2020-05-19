@@ -3,4 +3,5 @@ export const MENU = [
   { name: 'Order', path: '/order' },
   { name: 'Product', path: '/product' },
   { name: 'Users', path: '/user' },
+  { name: 'Collection', path: '/collection' },
 ];

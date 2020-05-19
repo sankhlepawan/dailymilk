@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { merge, Observable, of as observableOf } from 'rxjs';
 import { UserModel, UserApi, RoleApi, RoleType } from './user.types';
+import { defaultPagination } from '@shared/constants';
 
 import { Logger } from '@core/logger.service';
 
@@ -56,14 +57,17 @@ export class UserService {
     return this._httpClient.post<UserModel>(`/v1/user/enable`, { id: user.id, enable: !user.enable });
   }
 
+  findByMobile(mobile: string) {
+    let body = { query: `mobile==*${mobile}*`, limit: 100, ...defaultPagination };
+    return this._httpClient.post<UserApi>('/v1/user/search', body);
+  }
+
   getAllRoles() {
     const url = '/v1/role/search';
     const form = {
       query: 'id=gt=0',
-      sortBy: 'id',
-      sortType: 'asc',
-      page: 0,
       limit: 100,
+      ...defaultPagination,
     };
     return this._httpClient.post<RoleApi>(url, form);
   }

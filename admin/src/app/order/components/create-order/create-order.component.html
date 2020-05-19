@@ -14,105 +14,198 @@
   </mat-toolbar>
   <div class="main-div">
     <app-loader [isLoading]="isLoading" size="1"></app-loader>
-    <form class="example-form" [formGroup]="addProductForm">
-      <button *ngIf="t.controls.length === 0" mat-icon-button (click)="addMoreItemDetails(t.controls)">
-        Add Item
-      </button>
+    <mat-vertical-stepper [linear]="true" #stepper>
+      <mat-step [stepControl]="addProductForm">
+        <form class="example-form" [formGroup]="addProductForm">
+          <ng-template matStepLabel>Add Items</ng-template>
+          <button *ngIf="t.controls.length === 0" mat-icon-button (click)="addMoreItemDetails(t.controls)">
+            Add Item
+          </button>
 
-      <div *ngFor="let detail of t.controls; let i = index">
-        <div fxLayout="row" [formGroup]="detail" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
-          <mat-form-field class="example-full-width" fxFlex="16%" fxFlexFill>
-            <mat-label>Name</mat-label>
-            <input
-              [matAutocomplete]="auto"
-              (input)="onInputChange($event.target.value, i, detail)"
-              formControlName="name"
-              name="name"
-              matInput
-              placeholder="Name"
-            />
-            <mat-error *ngIf="detail.controls.name.errors">
-              <div *ngIf="detail.controls.name.errors.required">Name is required</div>
-            </mat-error>
-            <mat-progress-bar
-              style="top: 5px;"
-              *ngIf="detail.controls.name.value && detail.controls.name.value.length > 2"
-              mode="indeterminate"
-            ></mat-progress-bar>
-          </mat-form-field>
-
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            [displayWith]="displayFn"
-            (optionSelected)="setQwtAndPrice($event.option.value, detail)"
-          >
-            <mat-option *ngFor="let option of options[i]" [value]="option">
-              {{ option.name }}
-            </mat-option>
-          </mat-autocomplete>
-
-          <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
-            <mat-label>Quantity</mat-label>
-            <input
-              formControlName="qwt"
-              name="qwt"
-              (input)="onQwtChange($event.target.value, detail, i)"
-              matInput
-              placeholder="Quantity"
-            />
-            <mat-error *ngIf="detail.controls.qwt.errors">
-              <div *ngIf="detail.controls.qwt.errors.required">Quantity is required</div>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
-            <mat-label>Unit Price</mat-label>
-            <input
-              formControlName="price"
-              name="price"
-              [value]="detail.controls.name.value.price || 0"
-              matInput
-              placeholder="Price"
-            />
-            <mat-error *ngIf="detail.controls.price.errors">
-              <div *ngIf="detail.controls.price.errors.required">Price is required</div>
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
-            <mat-label>Total</mat-label>
-            <input
-              formControlName="total"
-              name="total"
-              (input)="calculateTotal($event.target.value, detail.controls)"
-              matInput
-              placeholder="Total"
-            />
-            <mat-error *ngIf="detail.controls.total.errors">
-              <div *ngIf="detail.controls.total.errors.required">Total is required</div>
-            </mat-error>
-          </mat-form-field>
-
-          <div fxFlex="10%">
-            <button style="line-height: 6;" mat-icon-button (click)="removeItemDetils(i, t.controls[i])">
-              <mat-icon aria-hidden="false" aria-label="Remove">delete</mat-icon>
-            </button>
-            <button
-              color="primary"
-              *ngIf="t.controls.length === i + 1"
-              style="line-height: 6;"
-              mat-icon-button
-              fxFlex
-              (click)="addMoreDetails(i, t.controls)"
+          <div *ngFor="let detail of t.controls; let i = index">
+            <div
+              fxLayout="row"
+              [formGroup]="detail"
+              fxLayout.xs="column"
+              fxLayoutAlign="start start"
+              fxLayoutGap="12px"
             >
-              <mat-icon aria-hidden="false" aria-label="add">add_box</mat-icon>
-            </button>
+              <mat-form-field class="example-full-width" fxFlex="16%" fxFlexFill>
+                <mat-label>Name</mat-label>
+                <input
+                  [matAutocomplete]="auto"
+                  (input)="onInputChange($event.target.value, i, detail)"
+                  formControlName="name"
+                  name="name"
+                  matInput
+                  placeholder="Name"
+                />
+                <mat-error *ngIf="detail.controls.name.errors">
+                  <div *ngIf="detail.controls.name.errors.required">Name is required</div>
+                </mat-error>
+                <mat-progress-bar
+                  style="top: 5px;"
+                  *ngIf="detail.controls.name.value && detail.controls.name.value.length > 2"
+                  mode="indeterminate"
+                ></mat-progress-bar>
+              </mat-form-field>
+
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayFn"
+                (optionSelected)="setQwtAndPrice($event.option.value, detail)"
+              >
+                <mat-option *ngFor="let option of options[i]" [value]="option">
+                  {{ option.name }}
+                </mat-option>
+              </mat-autocomplete>
+
+              <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
+                <mat-label>Quantity</mat-label>
+                <input
+                  formControlName="qwt"
+                  name="qwt"
+                  (input)="onQwtChange($event.target.value, detail, i)"
+                  matInput
+                  placeholder="Quantity"
+                />
+                <mat-error *ngIf="detail.controls.qwt.errors">
+                  <div *ngIf="detail.controls.qwt.errors.required">Quantity is required</div>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
+                <mat-label>Unit Price</mat-label>
+                <input
+                  formControlName="price"
+                  name="price"
+                  [value]="detail.controls.name.value.price || 0"
+                  matInput
+                  placeholder="Price"
+                />
+                <mat-error *ngIf="detail.controls.price.errors">
+                  <div *ngIf="detail.controls.price.errors.required">Price is required</div>
+                </mat-error>
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width" fxFlex="12%" fxFlexFill>
+                <mat-label>Total</mat-label>
+                <input
+                  formControlName="total"
+                  name="total"
+                  (input)="calculateTotal($event.target.value, detail.controls)"
+                  matInput
+                  placeholder="Total"
+                />
+                <mat-error *ngIf="detail.controls.total.errors">
+                  <div *ngIf="detail.controls.total.errors.required">Total is required</div>
+                </mat-error>
+              </mat-form-field>
+
+              <div fxFlex="10%">
+                <button style="line-height: 6;" mat-icon-button (click)="removeItemDetils(i, t.controls[i])">
+                  <mat-icon aria-hidden="false" aria-label="Remove">delete</mat-icon>
+                </button>
+                <button
+                  color="primary"
+                  *ngIf="t.controls.length === i + 1"
+                  style="line-height: 6;"
+                  mat-icon-button
+                  fxFlex
+                  (click)="addMoreDetails(i, t.controls)"
+                >
+                  <mat-icon aria-hidden="false" aria-label="add">add_box</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <div>
-        <mat-toolbar class="items-footer"> Total: {{ grandTotal }} | Items: {{ t.controls.length }} </mat-toolbar>
-      </div>
-    </form>
+          <div>
+            <mat-toolbar class="items-footer"> Total: {{ grandTotal }} | Items: {{ t.controls.length }} </mat-toolbar>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="orderForm">
+        <form class="example-form" [formGroup]="orderForm">
+          <ng-template matStepLabel>Delivery & Payment</ng-template>
+          <div>
+            <div mat-subheader>Delivery</div>
+            <mat-divider></mat-divider>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+              <mat-form-field
+                fxFlex="30%"
+                fxFlexFill
+                [ngClass]="{ 'has-error': !mobile.valid && mobile.touched }"
+                class="example-full-width"
+              >
+                <mat-label>Mobile</mat-label>
+                <input
+                  [matAutocomplete]="auto"
+                  formControlName="mobile"
+                  (input)="onMobileChange($event.target.value)"
+                  name="mobile"
+                  matInput
+                  placeholder="Mobile"
+                />
+                <app-validation-error [fieldVal]="mobile" message="not a valid mobile number."></app-validation-error>
+                <mat-progress-bar style="top: 10px;" *ngIf="isUserSearching" mode="indeterminate"></mat-progress-bar>
+              </mat-form-field>
+              <mat-autocomplete
+                #auto="matAutocomplete"
+                [displayWith]="displayUserNumberFn"
+                (optionSelected)="onUserMobileSelect($event.option.value)"
+              >
+                <mat-option *ngFor="let user of mobileUsers" [value]="user">
+                  {{ user.mobile }} ({{ user.firstName }} {{ user.lastName }})
+                </mat-option>
+              </mat-autocomplete>
+              <div fxFlex="10%" style="line-height: 5;">
+                <mat-checkbox class="example-margin" formControlName="whatsappNumber" name="whatsappNumber"
+                  >whtsapp</mat-checkbox
+                >
+              </div>
+
+              <mat-form-field class="example-full-width" fxFlex="30%" fxFlexFill>
+                <mat-label>First Name</mat-label>
+                <input formControlName="firstName" name="firstName" matInput placeholder="First Name" />
+                <app-validation-error [fieldVal]="firstName"></app-validation-error>
+              </mat-form-field>
+
+              <mat-form-field class="example-full-width" fxFlex="30%" fxFlexFill>
+                <mat-label>Last Name</mat-label>
+                <input formControlName="lastName" name="lastName" matInput placeholder="Last Name" />
+                <app-validation-error [fieldVal]="lastName"></app-validation-error>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.xs="column" fxLayoutAlign="start start" fxLayoutGap="12px">
+              <mat-form-field
+                [ngClass]="{ 'has-error': !shippingAddress.valid && shippingAddress.touched }"
+                class="example-full-width"
+                fxFlex="50%"
+                fxFlexFill
+              >
+                <mat-label>full Address</mat-label>
+                <textarea
+                  formControlName="shippingAddress"
+                  name="shippingAddress"
+                  matInput
+                  placeholder="Shipping Address"
+                ></textarea>
+                <app-validation-error [fieldVal]="shippingAddress"></app-validation-error>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div>
+            <div mat-subheader>Payment</div>
+            <mat-divider></mat-divider>
+          </div>
+        </form>
+      </mat-step>
+      <mat-step [stepControl]="addProductForm">
+        <mat-accordion>
+          <ng-template matStepLabel>Confirm</ng-template>
+        </mat-accordion>
+      </mat-step>
+    </mat-vertical-stepper>
   </div>
 </div>
